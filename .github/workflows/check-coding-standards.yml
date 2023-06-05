@@ -1,0 +1,36 @@
+name: "Check coding standards"
+
+on:
+  workflow_call:
+    inputs:
+      php-version:
+        description: "The PHP version to use when running the job"
+        default: "8.2"
+        required: false
+        type: "string"
+
+jobs:
+  check-coding-standards:
+    name: "Check coding standards"
+    runs-on: "${{ matrix.os }}"
+
+    strategy:
+      matrix:
+        os: [ "ubuntu-22.04" ]
+        php-version: [ "${{ inputs.php-version }}" ]
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          coverage: "none"
+
+      - name: "Install dependencies with Composer"
+        uses: "ramsey/composer-install@v2"
+
+      - name: "Check coding standards"
+        run: "vendor/bin/php-cs-fixer fix --dry-run --no-interaction --ansi --allow-risky=yes --diff --verbose --stop-on-violation"
