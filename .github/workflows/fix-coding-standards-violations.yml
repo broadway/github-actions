@@ -36,7 +36,7 @@ jobs:
         run: "vendor/bin/php-cs-fixer fix --no-interaction --ansi --allow-risky=yes --diff --verbose"
 
       - name: "Get branch name"
-        uses: "tj-actions/branch-names@v7"
+        uses: "tj-actions/branch-names@v8"
         id: "branch-name"
 
       - name: "Create and push commit"
